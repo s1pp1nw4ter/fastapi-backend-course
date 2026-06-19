@@ -1,5 +1,5 @@
 class Order:
-    TAX_RATE = 0.08  # 8% налог
+    TAX_RATE = 0.10  # 10% налог (обновлено на main)
     SERVICE_CHARGE = 0.05  # 5% сервисный сбор
 
     def __init__(self, customer):
@@ -15,9 +15,13 @@ class Order:
     def calculate_total(self):
         return sum(dish.price for dish in self.dishes)
 
+    def final_total(self):
+        total = self.calculate_total()
+        return total * (1 + Order.TAX_RATE) * (1 + Order.SERVICE_CHARGE)
+
     def __str__(self):
         dish_list = "\n".join([str(dish) for dish in self.dishes])
-        return f"Order for {self.customer.name}:\n{dish_list}\nTotal: ${self.calculate_total():.2f}"
+        return f"Order for {self.customer.name}:\n{dish_list}\nTotal: ${self.final_total():.2f}"
 
 
 class Dish:
