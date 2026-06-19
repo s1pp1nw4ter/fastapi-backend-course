@@ -47,3 +47,49 @@ def search_books(books, keyword):
         book for book in books
         if keyword_lower in book['title'].lower() or keyword_lower in book['author'].lower()
     ]
+
+
+def main():
+    """Точка входа: меню управления библиотекой."""
+    books = load_books()
+    while True:
+        print("\n=== Управление онлайн-библиотекой ===")
+        print("1. Показать все книги")
+        print("2. Добавить книгу")
+        print("3. Удалить книгу")
+        print("4. Поиск книг")
+        print("5. Выйти")
+        choice = input("Выберите действие (1-5): ").strip()
+
+        if choice == '1':
+            print("\nСписок книг:")
+            print(list_books(books))
+        elif choice == '2':
+            title = input("Введите название: ").strip()
+            author = input("Введите автора: ").strip()
+            year = input("Введите год издания: ").strip()
+            books = add_book(books, title, author, year)
+            saving_books(books)
+            print("Книга добавлена!")
+        elif choice == '3':
+            title_to_remove = input("Введите название книги для удаления: ").strip()
+            new_books = remove_book(books, title_to_remove)
+            if len(new_books) < len(books):
+                books = new_books
+                saving_books(books)
+                print("Книга удалена!")
+            else:
+                print("Книга с таким названием не найдена.")
+        elif choice == '4':
+            keyword = input("Введите ключевое слово: ").strip()
+            found = search_books(books, keyword)
+            print(list_books(found) if found else "Ничего не найдено.")
+        elif choice == '5':
+            print("Выход из программы.")
+            break
+        else:
+            print("Некорректный ввод. Попробуйте ещё раз.")
+
+
+if __name__ == "__main__":
+    main()
